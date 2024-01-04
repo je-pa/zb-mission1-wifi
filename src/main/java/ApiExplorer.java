@@ -1,9 +1,15 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import dto.TbPublicWifiInfoResponseDto;
+import util.LocalDateTimeAdapter;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 
 public class ApiExplorer {
     public static void main(String[] args) throws IOException {
@@ -35,10 +41,14 @@ public class ApiExplorer {
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = rd.readLine()) != null) {
-            sb.append(line);
+            sb.append(line).append("\n");
         }
         rd.close();
         conn.disconnect();
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).create();
+
         System.out.println(sb);
+        TbPublicWifiInfoResponseDto wifiInfoResponseDto = gson.fromJson(sb.toString(), TbPublicWifiInfoResponseDto.class);
+
     }
 }
