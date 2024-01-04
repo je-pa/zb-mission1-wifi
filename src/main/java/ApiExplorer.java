@@ -45,8 +45,8 @@ public class ApiExplorer {
         }
         rd.close();
         conn.disconnect();
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).create();
-
+//        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).create();
+        Gson gson = new Gson();
         System.out.println(sb);
         TbPublicWifiInfoResponseDto wifiInfoResponseDto = gson.fromJson(sb.toString(), TbPublicWifiInfoResponseDto.class);
 

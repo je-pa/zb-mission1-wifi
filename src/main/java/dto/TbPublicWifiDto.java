@@ -1,8 +1,10 @@
 package dto;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import lombok.Builder;
 import lombok.Getter;
+import util.LocalDateTimeAdapter;
 
 import java.time.LocalDateTime;
 
@@ -69,6 +71,7 @@ public class TbPublicWifiDto {
 
     //작업일자
     @SerializedName("WORK_DTTM")
+    @JsonAdapter(LocalDateTimeAdapter.class)
     private LocalDateTime workDateTime;
 
 }
