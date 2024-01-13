@@ -1,23 +1,21 @@
 package repository;
 
 import dto.TbPublicWifiDto;
+import dto.WifiDto;
+import mapper.WifiMapper;
 import util.DataBaseConnector;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WifiRepository {
-    DataBaseConnector dataBaseConnector;
-
-    public WifiRepository(DataBaseConnector dataBaseConnector) {
-        this.dataBaseConnector = dataBaseConnector;
-    }
 
     public int addAll(List<TbPublicWifiDto> wifis) {
         Connection connection = null;
         int rowCount = 0;
         try {
-            connection = dataBaseConnector.getConnection();
+            connection = DataBaseConnector.getConnection();
             String sql = " insert into wifi (" +
                     "manage_no, " +
                     "wrdofc, " +
@@ -78,9 +76,8 @@ public class WifiRepository {
         Connection connection = null;
         int rowCount = 0;
         try {
-            connection = dataBaseConnector.getConnection();
+            connection = DataBaseConnector.getConnection();
             String sql = "delete from wifi";
-            // create a database connection
             PreparedStatement statement = connection.prepareStatement(sql);
             connection.setAutoCommit(false);
             rowCount += statement.executeUpdate();
@@ -96,6 +93,36 @@ public class WifiRepository {
                 System.err.println(e.getMessage());
             }
             return rowCount;
+        }
+    }
+
+    public List<WifiDto> getListByLatAndLnt(double lat, double lnt) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        List<WifiDto> list = new ArrayList<>();
+        try {
+            connection = DataBaseConnector.getConnection();
+            String sql = "select * from wifi";
+            statement = connection.prepareStatement(sql);
+
+            rs = statement.executeQuery();
+            while(rs.next()){
+                WifiDto wifiDto = WifiMapper.wifiToWifiDto(WifiMapper.resultSetToWifi(rs));
+                wifiDto.setParamLocation(lat, lnt);
+                list.add(wifiDto);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException e) {
+                // connection close failed.
+                System.err.println(e.getMessage());
+            }
+            return list;
         }
     }
 }
