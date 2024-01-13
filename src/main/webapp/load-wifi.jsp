@@ -1,4 +1,5 @@
 <%@ page import="service.WifiService" %>
+<%@ page import="repository.WifiRepository" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -7,9 +8,12 @@
 </head>
 <body>
 <%
-    WifiService service = new WifiService();
-    service.loadWifi();
+    WifiRepository wifiRepository = new WifiRepository();
+    WifiService wifiService = new WifiService(wifiRepository);
+
+    int count = wifiService.loadWifi();
 %>
-<a href="/">홈 으로 가기</a>
+<h1 style="text-align: center"><%=count%>개의 WIFI 정보를 정상적으로 저장하였습니다.</h1>
+<p style="text-align: center"><a href="/">홈 으로 가기</a></p>
 </body>
 </html>
