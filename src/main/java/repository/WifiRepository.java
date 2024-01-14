@@ -103,13 +103,19 @@ public class WifiRepository {
         List<WifiDto> list = new ArrayList<>();
         try {
             connection = DataBaseConnector.getConnection();
-            String sql = "select * from wifi";
+            String sql = "select " +
+                    " *" +
+                    " ,(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance" +
+                    " FROM wifi ORDER BY distance" +
+                    " LIMIT 20;";
             statement = connection.prepareStatement(sql);
+            statement.setDouble(1,lat);
+            statement.setDouble(2,lnt);
+            statement.setDouble(3,lat);
 
             rs = statement.executeQuery();
             while(rs.next()){
-                WifiDto wifiDto = WifiMapper.wifiToWifiDto(WifiMapper.resultSetToWifi(rs));
-                wifiDto.setParamLocation(lat, lnt);
+                WifiDto wifiDto = WifiMapper.resultSetToWifiDto(rs);
                 list.add(wifiDto);
             }
         } catch (SQLException e) {
