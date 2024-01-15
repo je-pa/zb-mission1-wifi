@@ -1,0 +1,25 @@
+table {
+    font-size:16px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse:collapse;
+    border-spacing:0;
+    width:100%;
+    display:table;
+}
+table tr:nth-child(odd) {background-color:#fff}
+table tr:nth-child(even){background-color:#E7E9EB}
+table td, th {
+    padding:8px 8px;
+    display:table-cell;
+    vertical-align:top;
+    border: 1px solid #ddd;
+}
+table th{
+    text-align: center;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    background-color: #04AA6D;
+    color: white;
+    text-align:center;
+}
+table th:first-child, table td:first-child{padding-left:16px}
