@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WifiService {
-    WifiRepository wifiRepository;
+    private WifiRepository wifiRepository;
 
     public WifiService(WifiRepository wifiRepository) {
         this.wifiRepository = wifiRepository;
@@ -27,8 +27,8 @@ public class WifiService {
         return wifiRepository.addAll(getAllWifi());
     }
 
-    public TbPublicWifiDto detail() {
-        return null;
+    public WifiDto detail(String id) {
+        return wifiRepository.getById(id);
     }
 
     public List<WifiDto> list(double lat, double lnt) {
@@ -59,7 +59,6 @@ public class WifiService {
             conn = TbPublicWifiUrlConnector.getURLConnection(start,end);
             BufferedReader rd;
 
-            // 서비스코드가 정상이면 200~300사이의 숫자가 나옵니다.
             if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
                 rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             } else {

@@ -5,6 +5,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="repository.WifiRepository" %>
 <%@ page import="dto.WifiDto" %>
+<%@ page import="repository.LocationHistoryRepository" %>
+<%@ page import="service.LocationHistoryService" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
@@ -54,18 +56,19 @@
     <jsp:param name="PAGETITLE" value="와이파이 정보 구하기"/>
 </jsp:include>
 <%
-    WifiRepository wifiRepository = new WifiRepository();
-    WifiService wifiService = new WifiService(wifiRepository);
     String latParam = request.getParameter("lat");
     String lntParam = request.getParameter("lnt");
     if(latParam != null && lntParam != null){
+        WifiRepository wifiRepository = new WifiRepository();
+        WifiService wifiService = new WifiService(wifiRepository);
         double lat = Double.parseDouble(latParam);
         double lnt = Double.parseDouble(lntParam);
-        System.out.println(" 호ㅓㅏ면");
         List<WifiDto> wifis = wifiService.list(lat, lnt);
         pageContext.setAttribute("wifis", wifis);
 
-//        System.out.println(wifis.get(0).getManageNo() + " 호ㅓㅏ면");
+        LocationHistoryRepository historyRepository = new LocationHistoryRepository();
+        LocationHistoryService locationHistoryService = new LocationHistoryService(historyRepository);
+        locationHistoryService.addHistory(lat, lnt);
     }
 %>
 <form method="GET" action="/">

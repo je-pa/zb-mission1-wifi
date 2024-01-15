@@ -34,7 +34,6 @@ public class WifiRepository {
                     "longitude, " +
                     "work_date_time) " +
                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
-            // create a database connection
             PreparedStatement statement = connection.prepareStatement(sql);
             connection.setAutoCommit(false);
             for (TbPublicWifiDto dto : wifis) {
@@ -65,23 +64,27 @@ public class WifiRepository {
                 if (connection != null)
                     connection.close();
             } catch (SQLException e) {
-                // connection close failed.
                 System.err.println(e.getMessage());
             }
             return rowCount;
         }
     }
 
-    public int deleteAll() {
+    public WifiDto getById(String id) {
         Connection connection = null;
-        int rowCount = 0;
+        PreparedStatement statement = null;
+        ResultSet rs = null;
+        WifiDto wifiDto = null;
         try {
             connection = DataBaseConnector.getConnection();
-            String sql = "delete from wifi";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            connection.setAutoCommit(false);
-            rowCount += statement.executeUpdate();
-            connection.commit();
+            String sql = "select 0 as distance,* from wifi where manage_no = ?;";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1,id);
+
+            rs = statement.executeQuery();
+            while(rs.next()){
+                wifiDto = WifiMapper.resultSetToWifiDto(rs);
+            }
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         } finally {
@@ -89,10 +92,9 @@ public class WifiRepository {
                 if (connection != null)
                     connection.close();
             } catch (SQLException e) {
-                // connection close failed.
                 System.err.println(e.getMessage());
             }
-            return rowCount;
+            return wifiDto;
         }
     }
 
@@ -125,10 +127,33 @@ public class WifiRepository {
                 if (connection != null)
                     connection.close();
             } catch (SQLException e) {
-                // connection close failed.
                 System.err.println(e.getMessage());
             }
             return list;
         }
     }
+
+    public int deleteAll() {
+        Connection connection = null;
+        int rowCount = 0;
+        try {
+            connection = DataBaseConnector.getConnection();
+            String sql = "delete from wifi";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            connection.setAutoCommit(false);
+            rowCount += statement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+            return rowCount;
+        }
+    }
+
 }

@@ -1,8 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="dto.TbPublicWifiDto" %>
 <%@ page import="service.WifiService" %>
 <%@ page import="java.util.List" %>
+<%@ page import="repository.WifiRepository" %>
+<%@ page import="dto.WifiDto" %>
+<%@ page import="repository.BookmarkGroupRepository" %>
+<%@ page import="entity.BookmarkGroup" %>
+<%@ page import="service.BookmarkGroupService" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <% request.setCharacterEncoding("UTF-8"); %>
 <!DOCTYPE html>
@@ -16,10 +21,32 @@
     <jsp:param name="PAGETITLE" value="와이파이 정보 구하기"/>
 </jsp:include>
 <%
-    WifiService service = new WifiService();
-    TbPublicWifiDto wifi = service.detail();
-%>
+    BookmarkGroupRepository bookmarkGroupRepository = new BookmarkGroupRepository();
+    BookmarkGroupService bookmarkGroupService = new BookmarkGroupService(bookmarkGroupRepository);
+    List<BookmarkGroup> bookmarkGroups = bookmarkGroupService.getList();
+    pageContext.setAttribute("bookmarkGroups", bookmarkGroups);
 
+    String idParam = request.getParameter("mgrNo");
+    WifiDto wifi = null;
+    if(idParam != null){
+        WifiRepository wifiRepository = new WifiRepository();
+        WifiService wifiService = new WifiService(wifiRepository);
+        wifi = wifiService.detail(idParam);
+        pageContext.setAttribute("wifi", wifi);
+    }
+%>
+    <form method="POST" action="/bookmark-add-action.jsp">
+        <select name="bookmark_group_id">
+            <option value="0">북마크 그룹 이름 선택</option>
+            <c:if test="${not empty bookmarkGroups}">
+                <c:forEach var="bookmarkGrop" items="${bookmarkGroups}">
+                    <option value="${bookmarkGrop.id}">${bookmarkGrop.name}</option>
+                </c:forEach>
+            </c:if>
+        </select>
+        <input type="text" hidden="hidden" id="wifi_manage_no" name="wifi_manage_no" value="${wifi.manageNo}">
+        <input type="submit" value="북마크 추가하기"/>
+    </form>
     <table>
         <tr>
             <th style="width: 30%">거리(Km)</th>
