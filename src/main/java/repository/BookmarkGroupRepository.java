@@ -24,7 +24,6 @@ public class BookmarkGroupRepository {
                     "[order], " +
                     "reg_date_time) " +
                     "VALUES (?, ?, ?) ";
-            // create a database connection
             statement = connection.prepareStatement(sql);
 
             statement.setString(1, name);
@@ -39,7 +38,6 @@ public class BookmarkGroupRepository {
                 if (connection != null)
                     connection.close();
             } catch (SQLException e) {
-                // connection close failed.
                 System.err.println(e.getMessage());
             }
             return rowCount;
@@ -67,7 +65,6 @@ public class BookmarkGroupRepository {
                 if (connection != null)
                     connection.close();
             } catch (SQLException e) {
-                // connection close failed.
                 System.err.println(e.getMessage());
             }
             return list;
@@ -95,7 +92,6 @@ public class BookmarkGroupRepository {
                 if (connection != null)
                     connection.close();
             } catch (SQLException e) {
-                // connection close failed.
                 System.err.println(e.getMessage());
             }
             return bookmarkGroup;
@@ -108,7 +104,6 @@ public class BookmarkGroupRepository {
         try {
             connection = DataBaseConnector.getConnection();
             String sql = "update bookmark_group set name = ?, [order] = ?, update_date_time = ? where id = ?";
-            // create a database connection
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setString(1, name);
@@ -124,7 +119,6 @@ public class BookmarkGroupRepository {
                 if (connection != null)
                     connection.close();
             } catch (SQLException e) {
-                // connection close failed.
                 System.err.println(e.getMessage());
             }
             return rowCount;
@@ -137,7 +131,6 @@ public class BookmarkGroupRepository {
         try {
             connection = DataBaseConnector.getConnection();
             String sql = "DELETE FROM bookmark_group WHERE id=?";
-            // create a database connection
             PreparedStatement statement = connection.prepareStatement(sql);
 
             statement.setInt(1, id);
@@ -150,7 +143,6 @@ public class BookmarkGroupRepository {
                 if (connection != null)
                     connection.close();
             } catch (SQLException e) {
-                // connection close failed.
                 System.err.println(e.getMessage());
             }
             return rowCount;

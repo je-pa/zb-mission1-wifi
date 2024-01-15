@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: qkrwl
-  Date: 2024-01-05
-  Time: 오후 11:36
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     String pageTitle = request.getParameter("PAGETITLE");

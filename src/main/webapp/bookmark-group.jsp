@@ -9,11 +9,11 @@
 <html>
 <head>
     <link href="table.css" rel="stylesheet" type="text/css">
-    <title>와이파이 정보 구하기</title>
+    <title>북마크 그룹</title>
 </head>
 <body>
 <jsp:include page="header.jsp">
-    <jsp:param name="PAGETITLE" value="와이파이 정보 구하기"/>
+    <jsp:param name="PAGETITLE" value="북마크 그룹"/>
 </jsp:include>
 <%
     BookmarkGroupRepository bookmarkGroupRepository = new BookmarkGroupRepository();

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <title>Oen API 와이파이 정보 가져오기</title>
 </head>
 <body>
 <%

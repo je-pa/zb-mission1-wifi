@@ -1,7 +1,6 @@
 <%@ page import="repository.BookmarkGroupRepository" %>
 <%@ page import="service.BookmarkGroupService" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% request.setCharacterEncoding("UTF-8"); %>
 <%
     request.setCharacterEncoding("utf-8");
     String idParam = request.getParameter("id");
